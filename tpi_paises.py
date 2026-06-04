@@ -45,21 +45,148 @@ def buscar_pais(paises):
 ##############################################
 #SUBMENU_FILTRO
 def filtrar_paises(paises):
-    pass
+
+    opcion = 0
+
+    while opcion != 4:
+
+        print("""
+========================
+FILTRAR PAISES
+========================
+
+1. Filtrar por continente
+2. Filtrar por población
+3. Filtrar por superficie
+4. Volver
+""")
+        try:
+            opcion = int(input("Elija una opción: "))
+
+            if opcion == 1:
+                filtrar_por_continente(paises)
+
+            elif opcion == 2:
+                filtrar_por_poblacion(paises)
+
+            elif opcion == 3:
+                filtrar_por_superficie(paises)
+
+            elif opcion == 4:
+                print ("Volviendo al menú principal.")
+
+            else:
+                print("Opción inválida.")
+        except ValueError:
+            print("Ingrese una opción válida.")                        
+
 
 #FUNCIONES_SUBMENU_FILTRO
+def filtrar_por_continente(paises):
+    pass
+def filtrar_por_poblacion(paises):
+    pass
+def filtrar_por_superficie(paises):
+    pass
+
 
 #SUBMENU_ORDENAR
 def ordenar_paises(paises):
-    pass
+    
+    opcion = 0
+    
+    while opcion != 4:
+        print("""
+========================
+ORDENAR PAISES
+========================
+              
+1. Ordenar por nombre
+2. Ordenar por población
+3. Ordenar por superficie
+4. Volver
+""")
+        try:
+            opcion = int(input("Elija una opción: "))
+
+            if opcion == 1:
+                ordenar_por_nombre(paises)
+
+            elif opcion == 2:
+                ordenar_por_poblacion(paises)
+
+            elif opcion == 3:
+                ordenar_por_superficie(paises)
+
+            elif opcion == 4:
+                print("Volviendo al menú principal.")
+
+            else:
+                print("Opción inválida.")
+                   
+        except ValueError:
+            print("Ingrese una opción válida. ")                     
 
 #FUNCIONES_SUBMENU_ORDENAR
+def ordenar_por_nombre(paises):
+    pass
+def ordenar_por_poblacion(paises):
+    pass
+def ordenar_por_superficie(paises):
+    pass
+
 
 #SUBMENU_MOSTRAR_ESTADISTICAS
 def mostrar_estadisticas(paises):
-    pass
+    
+    opcion = 0
+    
+    while opcion != 5:
+        print("""
+========================
+ESTADISTICAS
+========================
+
+1. Mayor población
+2. Menor población
+3. Promedios
+4. Cantidad por continente
+5. Volver
+""")
+        try: 
+            opcion = int(input("Elija una opción: "))
+
+            if opcion == 1:
+                mayor_poblacion(paises)
+
+            elif opcion == 2:
+                menor_poblacion(paises)
+
+            elif opcion == 3:
+                promedios(paises)
+
+            elif opcion == 4:
+                cantidad_por_continente(paises)
+
+            elif opcion == 5:
+                print("Volviendo al menú principal. ")   
+
+            else:
+                print("Opción inválida.")  
+
+        except ValueError:
+            print("Ingrese una opción válida. ")                  
+
 
 #FUNCIONES_MOSTRAR_ESTADISTICAS
+def mayor_poblacion(paises):
+    pass
+def menor_poblacion(paises):
+    pass
+def promedios(paises):
+    pass
+def cantidad_por_continente(paises):
+    pass
 
 
 ##############################################
@@ -109,10 +236,10 @@ SISTEMA DE GESTION DE PAISES
                 print("test op3")
 
             elif opcion == 4:
-                print("test op4")
+                filtrar_paises(paises)
 
             elif opcion == 5:
-                print("test op 5")
+                ordenar_paises(paises)
 
             elif opcion == 6:
                 print("test op 6")

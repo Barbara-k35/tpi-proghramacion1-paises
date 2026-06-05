@@ -35,7 +35,36 @@ def agregar_pais(paises):
 
 #ACTUALIZAR_PAISES
 def actualizar_pais(paises):
-    pass
+    
+    print("\n--- ACTUALIZAR DATOS DE UN PAÍS ---")
+    nombre_buscar = input("País a modificar: ").strip()
+    
+    indice_encontrado = -1
+    for i in range(len(paises)):
+        if paises[i]["nombre"].lower() == nombre_buscar.lower():
+            indice_encontrado = i
+
+    if indice_encontrado == -1:
+        print(f"Error: El país '{nombre_buscar}' no existe.")
+        return
+
+    pais = paises[indice_encontrado]
+    print(f"Datos actuales -> Pob: {pais['poblacion']} | Sup: {pais['superficie']} km²")
+    
+    try:
+        nueva_pob = int(input("Nueva población: "))
+        nueva_sup = int(input("Nueva superficie (km²): "))
+        if nueva_pob < 0 or nueva_sup < 0:
+            print("Error: Valores negativos no permitidos.")
+            return
+    except ValueError:
+        print("Error: Ingrese números válidos.")
+        return
+
+    # SE MODIFICAN LOS DATOS DENTRO DE LA LISTA
+    paises[indice_encontrado]["poblacion"] = nueva_pob
+    paises[indice_encontrado]["superficie"] = nueva_sup
+    print(f"¡Datos de {pais['nombre']} modificados en la memoria!")
 
 #BUSCAR_PAIS
 def buscar_pais(paises):

@@ -149,6 +149,7 @@ def actualizar_pais(paises):
     paises[indice_encontrado]["superficie"] = nueva_sup
     print(f"¡Datos de {pais['nombre']} modificados en la memoria!")
 
+
 #BUSCAR_PAIS
 def buscar_pais(paises):
     print("\n--- BUSCAR PAÍS ---")
@@ -219,11 +220,79 @@ FILTRAR PAISES
 
 #FUNCIONES_SUBMENU_FILTRO
 def filtrar_por_continente(paises):
-    pass
+    continente = input("Ingrese el continente: ").strip()
+
+    encontrado = False
+
+    for pais in paises:
+
+        if pais["continente"].lower() == continente.lower():
+
+            print(f"""
+Nombre: {pais["nombre"]}
+Población: {pais["poblacion"]}
+Superficie: {pais["superficie"]}
+Continente: {pais["continente"]}
+""")
+
+            encontrado = True
+
+    if encontrado == False:
+        print("No se encontraron países.")
+
+
 def filtrar_por_poblacion(paises):
-    pass
+    try:
+
+        minimo = int(input("Ingrese población mínima: "))
+        maximo = int(input("Ingrese población máxima: "))
+
+    except ValueError:
+        print("Debe ingresar números enteros.")
+        return
+
+    encontrado = False
+
+    for pais in paises:
+
+        if pais["poblacion"] >= minimo and pais["poblacion"] <= maximo:
+
+            print(f"""
+Nombre: {pais["nombre"]}
+Población: {pais["poblacion"]}
+""")
+
+            encontrado = True
+
+    if encontrado == False:
+        print("No se encontraron países.")
+
+
 def filtrar_por_superficie(paises):
-    pass
+    try:
+
+        minimo = int(input("Ingrese superficie mínima: "))
+        maximo = int(input("Ingrese superficie máxima: "))
+
+    except ValueError:
+        print("Debe ingresar números enteros.")
+        return
+
+    encontrado = False
+
+    for pais in paises:
+
+        if pais["superficie"] >= minimo and pais["superficie"] <= maximo:
+
+            print(f"""
+Nombre: {pais["nombre"]}
+Superficie: {pais["superficie"]}
+""")
+
+            encontrado = True
+
+    if encontrado == False:
+        print("No se encontraron países.")
 
 
 #SUBMENU_ORDENAR

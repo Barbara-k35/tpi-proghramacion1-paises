@@ -1,15 +1,17 @@
-#CARGA_INICIAL_DESDE_ARCHIVO_CSV
+##############################################
+# CARGA INICIAL DESDE ARCHIVO CSV
+##############################################
 def cargar_paises():
     paises = [] 
 
     try:
         archivo = open("paises.csv", "r", encoding="utf-8")
-
+        # Saltea la primer línea
         linea = archivo.readline()
 
         for linea in archivo:
             datos = linea.strip().split(",")
-
+            # Crea el diccionario
             pais = {
                 "nombre": datos[0],
                 "poblacion": int(datos[1]),
@@ -28,52 +30,96 @@ def cargar_paises():
 
 
 ##############################################
-#FUNCIONES PRINCIPALES
-#AGREGAR_PAISES
+# FUNCIONES PRINCIPALES
+##############################################
+# AGREGAR PAIS
 def agregar_pais(paises):
-    print("\n--- AGREGAR NUEVO PAIS ---")
-    nombre = input("Nombre del pais: ").strip()
-    
-    # Validacion: Verificar si el pais ya existe en la lista
-    for p in paises:
-        if p["nombre"].lower() == nombre.lower():
-            print(f"Error: El pais '{nombre}' ya existe en el sistema.")
-            return
+    print("\n--- AGREGAR UN PAÍS ---")
 
-    continente = input("Continente al que pertenece: ").strip()
-    
-    # Validación: Que no dejen campos vacios
-    if nombre == "" or continente == "":
-        print("Error: El nombre y el continente no pueden estar vacios.")
+    nombre_agregar = input("Ingrese el nombre del país que quiera agregar: ").strip()
+    # Valida que el nombre no esté vacío
+    if nombre_agregar == "":
+        print("El nombre no puede estar vacío.")
         return
 
-    try:
-        poblacion = int(input("Poblacion total: "))
-        superficie = int(input("Superficie total (en km²): "))
-        
-        # Validación: Que no pongan números negativos
-        if poblacion < 0 or superficie < 0:
-            print("Error: La poblacion y la superficie no pueden ser negativas.")
-            return
-            
-    except ValueError:
-        print("Error: Debe ingresar numeros enteros validos para poblacion y superficie.")
+    # Verifica si el país ya existe
+    if pais_duplicado(paises, nombre_agregar):
+        print("Este país ya existe. ")
         return
 
-    # Si paso las validaciones, creamos el diccionario del nuevo pais
+    while True:
+        try:
+            agregar_pob = int(input("Ingrese la población del país ingresado: "))
+
+            if agregar_pob <= 0:
+                print("La población debe ser mayor a 0.")
+            else:
+                break
+        except ValueError:
+            print("Debe ingresar un número entero. ")    
+
+    while True:
+        try:
+            agregar_sup = int(input("Ingrese la superficie del páís ingresado: "))
+
+            if agregar_sup <= 0:
+                print("La superficie debe ser mayor a 0.")
+            else:
+                break
+        except ValueError:
+            print("Debe ingresar un número entero. ")  
+
+
+
+    while True:
+        print("Seleccione el continente del país ingresado")
+        print("""
+1. America
+2. Europa
+3. Asia
+4. Africa
+5. Oceania
+""")
+        try:
+            opcion = int(input("Seleccione un continente: "))
+
+            if opcion == 1:
+                continente = "America"
+                break
+
+            elif opcion == 2:
+                continente = "Europa"
+                break
+
+            elif opcion == 3:
+                continente = "Asia"
+                break
+
+            elif opcion == 4:
+                continente = "Africa"
+                break
+
+            elif opcion == 5:
+                continente = "Oceania"     
+                break
+
+            else:
+                print("Opción inválida. ")
+        except ValueError:
+            print("Debe ingresar un número válido. ")     
+
     nuevo_pais = {
-        "nombre": nombre,
-        "poblacion": poblacion,
-        "superficie": superficie,
-        "continente": continente
-    }
-    
-    # Lo agregamos a la lista general
+    "nombre": nombre_agregar,
+    "poblacion": agregar_pob,
+    "superficie": agregar_sup,
+    "continente": continente}   
+    # Agrega el nuevo país a la lista
     paises.append(nuevo_pais)
-    print(f"'{nombre}' fue agregado exitosamente en la memoria.")
+
+    print("País agregado correctamente.")
 
 
-#ACTUALIZAR_PAISES
+# ACTUALIZAR PAIS
 def actualizar_pais(paises):
     
     print("\n--- ACTUALIZAR DATOS DE UN PAÍS ---")
@@ -94,8 +140,8 @@ def actualizar_pais(paises):
     try:
         nueva_pob = int(input("Nueva población: "))
         nueva_sup = int(input("Nueva superficie (km²): "))
-        if nueva_pob < 0 or nueva_sup < 0:
-            print("Error: Valores negativos no permitidos.")
+        if nueva_pob <= 0 or nueva_sup <= 0:
+            print("Error: Ingrese un valor mayor a 0.")
             return
     except ValueError:
         print("Error: Ingrese números válidos.")
@@ -106,29 +152,39 @@ def actualizar_pais(paises):
     paises[indice_encontrado]["superficie"] = nueva_sup
     print(f"¡Datos de {pais['nombre']} modificados en la memoria!")
 
-#BUSCAR_PAIS
-def buscar_pais(paises):
-    print("\n--- BUSCAR PAIS POR NOMBRE ---")
-    nombre_buscar = input("Ingrese el nombre del pais que quiere buscar: ").strip()
-    
-    # Recorremos la lista buscando coincidencia (sin importar mayusculas/minusculas)
-    for pais in paises:
-        if pais["nombre"].lower() == nombre_buscar.lower():
-            print("\n==============================")
-            print(f" Pais: {pais['nombre']}")
-            print(f" Continente: {pais['continente']}")
-            print(f" Poblacion: {pais['poblacion']} habitantes")
-            print(f" Superficie: {pais['superficie']} km²")
-            print("==============================")
-            return # Corta la funcion porque ya lo encontramos
-            
-    # Si no existe
-    print(f"No se encontro ningun pais con el nombre '{nombre_buscar}'.")
 
+# BUSCAR PAIS
+def buscar_pais(paises):
+    print("\n--- BUSCAR PAÍS ---")
+
+    buscar_nombre = input("Ingrese el nombre del país a buscar: ").strip()
+
+    if buscar_nombre == "":
+        print("Debe ingresar un nombre.")
+        return
+
+    pais_encontrado = False
+
+    for pais in paises:
+        # Busca coincidencias parciales ignorando mayúsculas y minúsculas
+        if buscar_nombre.lower() in pais["nombre"].lower():
+
+            print(f"""
+Nombre: {pais["nombre"]}
+Población: {pais["poblacion"]}
+Superficie: {pais["superficie"]} km²
+Continente: {pais["continente"]}
+""")
+
+            pais_encontrado = True
+
+    if pais_encontrado == False:
+        print("No se encontró ningún país.")
 
 
 ##############################################
-#SUBMENU_FILTRO
+# SUBMENU FILTRO
+##############################################
 def filtrar_paises(paises):
 
     opcion = 0
@@ -166,16 +222,89 @@ FILTRAR PAISES
             print("Ingrese una opción válida.")                        
 
 
-#FUNCIONES_SUBMENU_FILTRO
+#FUNCIONES SUBMENU FILTRO
+# Mostrar únicamente los países que pertenecen al continente ingresado
 def filtrar_por_continente(paises):
-    pass
+    continente = input("Ingrese el continente: ").strip()
+
+    encontrado = False
+
+    for pais in paises:
+
+        if pais["continente"].lower() == continente.lower():
+
+            print(f"""
+Nombre: {pais["nombre"]}
+Población: {pais["poblacion"]}
+Superficie: {pais["superficie"]}
+Continente: {pais["continente"]}
+""")
+
+            encontrado = True
+
+    if encontrado == False:
+        print("No se encontraron países.")
+
+
+# Mostrar países cuya población se encuentre dentro del rango indicado
 def filtrar_por_poblacion(paises):
-    pass
+    try:
+
+        minimo = int(input("Ingrese población mínima: "))
+        maximo = int(input("Ingrese población máxima: "))
+
+    except ValueError:
+        print("Debe ingresar números enteros.")
+        return
+
+    encontrado = False
+
+    for pais in paises:
+
+        if pais["poblacion"] >= minimo and pais["poblacion"] <= maximo:
+
+            print(f"""
+Nombre: {pais["nombre"]}
+Población: {pais["poblacion"]}
+""")
+
+            encontrado = True
+
+    if encontrado == False:
+        print("No se encontraron países.")
+
+
+# Mostrar países cuya superficie se encuentre dentro del rango indicado
 def filtrar_por_superficie(paises):
-    pass
+    try:
+
+        minimo = int(input("Ingrese superficie mínima: "))
+        maximo = int(input("Ingrese superficie máxima: "))
+
+    except ValueError:
+        print("Debe ingresar números enteros.")
+        return
+
+    encontrado = False
+
+    for pais in paises:
+
+        if pais["superficie"] >= minimo and pais["superficie"] <= maximo:
+
+            print(f"""
+Nombre: {pais["nombre"]}
+Superficie: {pais["superficie"]}
+""")
+
+            encontrado = True
+
+    if encontrado == False:
+        print("No se encontraron países.")
 
 
-#SUBMENU_ORDENAR
+##############################################
+#SUBMENU ORDENAR
+##############################################
 def ordenar_paises(paises):
     
     opcion = 0
@@ -212,7 +341,9 @@ ORDENAR PAISES
         except ValueError:
             print("Ingrese una opción válida. ")                     
 
-#FUNCIONES_SUBMENU_ORDENAR
+
+#FUNCIONES SUBMENU ORDENAR
+# Ordenamiento burbuja por nombre
 def ordenar_por_nombre(paises):
     print("\n--- ORDENAR PAÍSES POR NOMBRE ---")
     if len(paises) == 0:
@@ -231,6 +362,9 @@ def ordenar_por_nombre(paises):
     print("¡Países ordenados alfabéticamente!")
     # Mostramos los países ordenados llamando a la función extra que ya tenías
     mostrar_paises(paises)
+
+
+# Ordenamiento burbuja por población
 def ordenar_por_poblacion(paises):
     print("\n--- ORDENAR PAÍSES POR POBLACIÓN (MAYOR A MENOR) ---")
     if len(paises) == 0:
@@ -247,6 +381,9 @@ def ordenar_por_poblacion(paises):
     print("¡Países ordenados por cantidad de habitantes!")
     for p in paises:
         print(f"- {p['nombre']}: {p['poblacion']} habitantes. ({p['continente']})")
+
+
+# Ordenamiento burbuja por superficie
 def ordenar_por_superficie(paises):
     print("\n--- ORDENAR PAÍSES POR SUPERFICIE (MAYOR A MENOR) ---")
     if len(paises) == 0:
@@ -264,7 +401,9 @@ def ordenar_por_superficie(paises):
         print(f"- {p['nombre']}: {p['superficie']} km². ({p['continente']})")
 
 
-#SUBMENU_MOSTRAR_ESTADISTICAS
+##############################################
+#SUBMENU MOSTRAR ESTADISTICAS
+##############################################
 def mostrar_estadisticas(paises):
     
     opcion = 0
@@ -306,27 +445,106 @@ ESTADISTICAS
             print("Ingrese una opción válida. ")                  
 
 
-#FUNCIONES_MOSTRAR_ESTADISTICAS
+#FUNCIONES MOSTRAR ESTADISTICAS
+# Buscar el país con mayor población
 def mayor_poblacion(paises):
-    pass
+    print("\n--- PAIS CON MAYOR POBLACION ---")
+
+    mayor = paises [0]
+
+    for pais in paises:
+        if pais["poblacion"] > mayor["poblacion"]:
+            mayor = pais
+
+    print (f"""
+Nombre: {mayor["nombre"]}
+Población: {mayor["poblacion"]}
+Continente: {mayor["continente"]}
+""")
+
+
+# Buscar el país con menor población
 def menor_poblacion(paises):
-    pass
+    print("\n--- PAIS CON MENOR POBLACION ---")
+
+    menor = paises [0]
+
+    for pais in paises:
+        if pais["poblacion"] < menor["poblacion"]:
+            menor = pais
+            
+    print (f"""
+Nombre: {menor["nombre"]}
+Población: {menor["poblacion"]}
+Continente: {menor["continente"]}
+""")
+    
+
+# Sumar valores para calcular los promedios de la población y superficie
 def promedios(paises):
-    pass
+    print("\n--- PROMEDIOS ---")
+
+    total_poblacion = 0
+    total_superficie = 0
+
+    for pais in paises:
+
+        total_poblacion += pais["poblacion"]
+        total_superficie += pais["superficie"]
+
+    promedio_poblacion = total_poblacion / len(paises)
+    promedio_superficie = total_superficie / len(paises)
+
+    print(f"""
+Promedio de población: {promedio_poblacion:.2f}
+Promedio de superficie: {promedio_superficie:.2f}
+""")
+
+
+# Contar cuántos países hay por continente
 def cantidad_por_continente(paises):
-    pass
+    print("\n--- CANTIDAD DE PAÍSES POR CONTINENTE ---")
+
+    cantidades = {}
+
+    for pais in paises:
+
+        continente = pais["continente"]
+
+        if continente in cantidades:
+
+            cantidades[continente] += 1
+
+        else:
+
+            cantidades[continente] = 1
+
+    for continente in cantidades:
+
+        print(f"{continente}: {cantidades[continente]} países")
 
 
 ##############################################
-#FUNCION_EXTRA
+#FUNCIONES AUXILIARES
+##############################################
 def mostrar_paises(paises): 
     print("\n =====PAISES=====")
     for pais in paises:
         print(pais["nombre"], "-", pais["continente"])
 
 
+# Devuelve True si el país ya existe en la lista
+def pais_duplicado(paises, nombre):
+    for pais in paises:
+        if pais["nombre"].lower() == nombre.lower():
+            return True
+
+    return False 
+
+
 ##############################################
 #MENU_PRINCIPAL
+##############################################
 def menu_principal():
 
     paises = cargar_paises()

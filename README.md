@@ -40,11 +40,11 @@ Se utilizará un conjunto de datos de países que contiene información sobre:
 - Nombre del país
 - Población
 - Superficie terrestre (km²)
-- -Continente
+- Continente
 
 # Links
-- Video explicativo:
-- Repositorio GitHub:
+- Video explicativo: https://youtu.be/F7xrXtKqihk
+- Repositorio GitHub: https://github.com/Barbara-k35/tpi-proghramacion1-paises.git
 - Dataset original: https://www.worldometers.info/es/poblacion-mundial/poblacion-por-pais/
 
 
